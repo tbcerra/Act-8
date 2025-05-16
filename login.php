@@ -8,14 +8,14 @@
 
 <?php
 // Definir variables
-$usuario = "jperez";
-$contrasena = "9999";
+$usuarioC = "jperez";
+$contrasenaC = "9999";
 $mensaje = "";
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuarioC = trim($_POST["usuario"]);
-    $contrasenaC = trim($_POST["contrasena"]);
+    $usuario = trim($_POST["usuario"]);
+    $contrasena = trim($_POST["contrasena"]);
 
     // Validar campos vacíos
     if (empty($usuario) || empty($contrasena)) {
