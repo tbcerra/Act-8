@@ -8,21 +8,21 @@
 
 <?php
 // Definir variables
-$usuarioCorrecto = "jperez";
-$contrasenaCorrecta = "9999";
+$usuario = "jperez";
+$contrasena = "9999";
 $mensaje = "";
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = trim($_POST["usuario"]);
-    $contrasena = trim($_POST["contrasena"]);
+    $usuarioC = trim($_POST["usuario"]);
+    $contrasenaC = trim($_POST["contrasena"]);
 
     // Validar campos vacíos
     if (empty($usuario) || empty($contrasena)) {
         $mensaje = "Por favor, complete todos los campos.";
     } else {
         // Verificar credenciales
-        if ($usuario === $usuarioCorrecto && $contrasena === $contrasenaCorrecta) {
+        if ($usuario === $usuarioC && $contrasena === $contrasenaC) {
             $mensaje = "Bienvenido al sistema, Juan Pérez.";
         } else {
             $mensaje = "Usuario y/o Contraseña incorrectos. Intentar nuevamente.";
