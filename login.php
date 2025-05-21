@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Login de Usuario</title>
-</head>
-<body>
-
 <?php
+session_start();
+
 // Definir variables
 $usuarioCorrecto = "jperez";
 $contrasenaCorrecta = "9999";
 $mensaje = "";
+
+// Verificar si se cerró sesión
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit;
+}
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,7 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Verificar credenciales
         if ($usuario === $usuarioCorrecto && $contrasena === $contrasenaCorrecta) {
-            $mensaje = "Bienvenido al sistema, Juan Pérez.";
+            $_SESSION['logueado'] = true;
+            $_SESSION['nombre'] = "Juan Pérez";
         } else {
             $mensaje = "Usuario y/o Contraseña incorrectos. Intentar nuevamente.";
         }
@@ -31,24 +33,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Ingreso al sistema</h2>
-<form method="post" action="">
-    <label for="usuario">Usuario:</label>
-    <input type="text" name="usuario" id="usuario" required><br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login de Usuario</title>
+</head>
+<body>
 
-    <label for="contrasena">Contraseña:</label>
-    <input type="password" name="contrasena" id="contrasena" required><br><br>
+    <h2>Ingreso al sistema</h2>
 
-    <input type="submit" value="Ingresar">
-</form>
+    <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+        <p><strong>Bienvenido al sistema, <?php echo $_SESSION['nombre']; ?>.</strong></p>
+        <form method="get" action="">
+            <input type="submit" name="logout" value="Volver al Inicio">
+        </form>
+    <?php else: ?>
+        <form method="post" action="">
+            <label for="usuario">Usuario:</label>
+            <input type="text" name="usuario" id="usuario" required><br><br>
 
-<?php
-// Mostrar el mensaje si existe
-if (!empty($mensaje)) {
-    echo "<p><strong>$mensaje</strong></p>";
-}
-?>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" name="contrasena" id="contrasena" required><br><br>
+
+            <input type="submit" value="Ingresar">
+        </form>
+
+        <?php if (!empty($mensaje)) {
+            echo "<p><strong>$mensaje</strong></p>";
+        } ?>
+    <?php endif; ?>
 
 </body>
 </html>
-
